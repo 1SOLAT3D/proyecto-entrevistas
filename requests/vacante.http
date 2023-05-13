@@ -1,0 +1,42 @@
+@api = http://localhost:3000/vacante
+
+### Obtener todos los datos de la tabla Vacante
+
+GET {{api}}
+
+### Ingresar una Vacante
+
+POST {{api}}
+Content-Type: application/json
+
+{
+    "id": "5",
+    "area": "Atencion al Cliente",
+    "sueldo": "2900",
+    "activo": 0
+}
+
+### Obtener una Vacante por su ID
+
+GET {{api}}/3
+
+
+### Borrar Vacante por su ID
+
+DELETE {{api}}/3
+
+### Cantidad de Vacantes
+
+{{api}}/count
+
+### Actualizar Vacante
+
+PUT {{api}}/3
+Content-Type: application/json
+
+{
+    "id": "3",
+    "area": "RH",
+    "sueldo": "3000",
+    "activo": 1
+}

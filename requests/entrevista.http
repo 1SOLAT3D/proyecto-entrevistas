@@ -1,0 +1,46 @@
+@api = http://localhost:3000/entrevistas
+
+### Obtener todos los datos de la tabla Entrevista
+
+GET {{api}}
+
+### Ingresar una Entrevista
+
+POST {{api}}
+Content-Type: application/json
+
+{
+    "id": "1",
+    "vacante": "2",
+    "prospecto": "1",
+    "fecha_entrevista": "2023-05-5",
+    "notas": "Prueba",
+    "reclutado": false
+}
+
+### Obtener una Entrevista por su ID
+
+GET {{api}}/1
+
+
+### Borrar Entrevista por su ID
+
+DELETE {{api}}/1
+
+### Cantidad de Entrevistas
+
+{{api}}/count
+
+### Actualizar Entrevista
+
+PUT {{api}}/1
+Content-Type: application/json
+
+{
+    "id": "1",
+    "vacante": "3",
+    "prospecto": "1",
+    "fecha_entrevista": "2023-05-10",
+    "notas": "Prueba",
+    "reclutado": true
+}

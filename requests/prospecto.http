@@ -1,0 +1,42 @@
+@api = http://localhost:3000/prospecto
+
+### Obtener todos los datos de la tabla Vacante
+
+GET {{api}}
+
+### Ingresar un Prospecto
+
+POST {{api}}
+Content-Type: application/json
+
+{
+    "id": "3",
+    "nombre": "Adan Villanueva",
+    "correo": "adan.vp@gmail.com",
+    "fecha_registro": "2023-05-20"
+}
+
+### Obtener un Prospecto por su ID
+
+GET {{api}}/2
+
+
+### Borrar Prospecto por su ID
+
+DELETE {{api}}/2
+
+### Cantidad de Prospectos
+
+{{api}}/count
+
+### Actualizar Prospecto
+
+PUT {{api}}/3
+Content-Type: application/json
+
+{
+    "id": "3",
+    "nombre": "RH",
+    "correo": "3000",
+    "fecha_registro": "2023-06-14"
+}
