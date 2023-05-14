@@ -1,4 +1,3 @@
-
 export const queries = {
 
     // Tabla Vacante
@@ -23,7 +22,7 @@ export const queries = {
 
     getAllEntrevistas: 'select * from entrevistas',
     createNewEntrevista: 'insert into entrevistas (id, vacante, prospecto, fecha_entrevista, notas, reclutado) values (@id, @vacante, @prospecto, @fecha_entrevista, @notas, @reclutado)',
-    getEntrevistaById: 'SELECT * FROM entrevistas Where id = @id',
+    getEntrevistaById: 'SELECT * FROM entrevistas where id = @id',
     deleteEntrevistaById: 'DELETE FROM [entrevista].[dbo].[entrevistas] WHERE id= @id',
     getTotalEntrevistas: 'SELECT COUNT(*) FROM entrevista.dbo.entrevista',
     updateEntrevistaById: 'UPDATE [entrevista].[dbo].[entrevistas] SET id = @id, vacante = @vacante, prospecto = @prospecto, fecha_entrevista = @fecha_entrevista, notas = @notas, reclutado = @reclutado WHERE id = @id'

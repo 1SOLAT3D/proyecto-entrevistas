@@ -11,9 +11,9 @@ Content-Type: application/json
 
 {
     "id": "3",
-    "nombre": "Adan Villanueva",
-    "correo": "adan.vp@gmail.com",
-    "fecha_registro": "2023-05-20"
+    "nombre": "Kevin",
+    "correo": "gucci@gmail.com",
+    "fecha_registro": "2023-05-24"
 }
 
 ### Obtener un Prospecto por su ID
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
     "id": "3",
-    "nombre": "RH",
-    "correo": "3000",
+    "nombre": "Rodo",
+    "correo": "3000@gmail.com",
     "fecha_registro": "2023-06-14"
 }

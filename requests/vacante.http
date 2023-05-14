@@ -10,15 +10,15 @@ POST {{api}}
 Content-Type: application/json
 
 {
-    "id": "5",
-    "area": "Atencion al Cliente",
-    "sueldo": "2900",
-    "activo": 0
+    "id": "3",
+    "area": "SLAM",
+    "sueldo": "3500",
+    "activo": false
 }
 
 ### Obtener una Vacante por su ID
 
-GET {{api}}/3
+GET {{api}}/1
 
 
 ### Borrar Vacante por su ID

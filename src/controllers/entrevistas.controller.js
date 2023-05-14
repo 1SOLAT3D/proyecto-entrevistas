@@ -58,17 +58,12 @@ export const getEntrevistaById = async (req, res) => {
 export const deleteEntrevistaById = async (req, res) => {
     try {
         const pool = await getConnection();
-
         const result = await pool
             .request()
             .input("id", req.params.id)
             .query(queries.deleteEntrevistaById);
-        res.send(result);
-
         if (result.rowsAffected[0] === 0) return res.sendStatus(404);
-
         return res.sendStatus(204);
-
     } catch (error) {
         res.status(500);
         res.send(error.message);

@@ -56,15 +56,11 @@ export const getProspectoById = async (req, res) => {
 export const deleteProspectoById = async (req, res) => {
     try {
         const pool = await getConnection();
-
         const result = await pool
             .request()
             .input("id", req.params.id)
             .query(queries.deleteProspectoById);
-        res.send(result);
-
         if (result.rowsAffected[0] === 0) return res.sendStatus(404);
-
         return res.sendStatus(204);
         
     } catch (error) {

@@ -10,7 +10,7 @@ POST {{api}}
 Content-Type: application/json
 
 {
-    "id": "1",
+    "id": "2",
     "vacante": "2",
     "prospecto": "1",
     "fecha_entrevista": "2023-05-5",
@@ -25,7 +25,7 @@ GET {{api}}/1
 
 ### Borrar Entrevista por su ID
 
-DELETE {{api}}/1
+DELETE {{api}}/2
 
 ### Cantidad de Entrevistas
 
@@ -41,6 +41,6 @@ Content-Type: application/json
     "vacante": "3",
     "prospecto": "1",
     "fecha_entrevista": "2023-05-10",
-    "notas": "Prueba",
+    "notas": "Prueba esta",
     "reclutado": true
 }

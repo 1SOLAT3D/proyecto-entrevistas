@@ -60,12 +60,8 @@ export const deleteVacanteById = async (req, res) => {
             .request()
             .input("id", req.params.id)
             .query(queries.deleteVacanteById);
-        res.send(result);
-
         if (result.rowsAffected[0] === 0) return res.sendStatus(404);
-
         return res.sendStatus(204);
-        
     } catch (error) {
         res.status(500);
         res.send(error.message);
