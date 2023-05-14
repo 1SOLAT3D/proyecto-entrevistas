@@ -2,7 +2,6 @@ import { Int } from 'mssql';
 import { getConnection, queries, sql } from '../database';
 
 export const getProspecto = async (req, res) => {
-
     try {
         const pool = await getConnection();
         const result = await pool.request().query(queries.getAllProspectos);
@@ -11,13 +10,10 @@ export const getProspecto = async (req, res) => {
         res.status(500)
         res.send(error.message);
     }
-
 };
 
 export const createNewProspecto = async (req, res) => {
-
     const { id, nombre, correo, fecha_registro } = req.body
-
     if (id == null || nombre == null || correo == null || fecha_registro == null) {
         return res.status(400).json({ msg: 'Favor de llenar todos los campos' })
     }
@@ -30,7 +26,6 @@ export const createNewProspecto = async (req, res) => {
             input("correo", sql.VarChar, correo).
             input("fecha_registro", sql.Date, fecha_registro)
             .query(queries.createNewProspecto)
-
         res.json({ id, nombre, correo, fecha_registro })
     } catch (error) {
         res.status(500);
@@ -41,7 +36,6 @@ export const createNewProspecto = async (req, res) => {
 export const getProspectoById = async (req, res) => {
     try {
         const pool = await getConnection();
-
         const result = await pool
             .request()
             .input("id", req.params.id)
@@ -71,11 +65,9 @@ export const deleteProspectoById = async (req, res) => {
 
 export const updateProspectoById = async (req, res) => {
     const { id, nombre, correo, fecha_registro } = req.body;
-
     if (id == null || nombre == null || correo == null || fecha_registro == null) {
         return res.status(400).json({ msg: 'Favor de llenar todos los campos' });
     }
-
     try {
         const pool = await getConnection();
         await pool
@@ -94,7 +86,6 @@ export const updateProspectoById = async (req, res) => {
 
 export const getTotalProspectos = async (req, res) => {
     const pool = await getConnection();
-
     const result = await pool.request().query(queries.getTotalProspectos);
     console.log(result);
     res.json(result.recordset[0][""]);
