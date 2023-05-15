@@ -10,11 +10,11 @@ POST {{api}}
 Content-Type: application/json
 
 {
-    "id": "2",
-    "vacante": "2",
-    "prospecto": "1",
-    "fecha_entrevista": "2023-05-5",
-    "notas": "Prueba",
+    "id": "3",
+    "vacante": "1",
+    "prospecto": "3",
+    "fecha_entrevista": "2023-05-24",
+    "notas": "En espera",
     "reclutado": false
 }
 
@@ -37,7 +37,7 @@ PUT {{api}}/1
 Content-Type: application/json
 
 {
-    "id": "1",
+    "id": "3",
     "vacante": "3",
     "prospecto": "1",
     "fecha_entrevista": "2023-05-10",

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Entrevistas.css".css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Registro de Entrevistas</title>
+</head>
+
+<body>
+    <div class="container">
+        Registro de Entrevistas
+        <form id="miFormulario">
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="id" class="form-label">ID Entrevista</label>
+                <input type="number" class="form-control" id="id">
+            </div>
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="vacante" class="form-label">ID Vacante</label>
+                <input type="number" class="form-control" id="vacante">
+            </div>
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="prospecto" class="form-label">ID Prospecto</label>
+                <input type="number" class="form-control" id="prospecto">
+            </div>
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="fecha_entrevista" class="form-label">Fecha de Entrevista</label><br>
+                <input type="date" id="fecha_entrevista">
+            </div>
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="notas" class="form-label">Notas</label>
+                <input type="text" class="form-control" id="notas">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="reclutado">
+                <label class="form-check-label" for="flexCheckDefault">Reclutado</label>
+            </div>
+            <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">
+                <table class="table table-bordered table-striped">
+                    Vacantes
+                    <thead>
+                        <tr>
+                            <th>ID Entrevista</th>
+                            <th>ID Vacante</th>
+                            <th>ID Prospecto</th>
+                            <th>Fecha de la Entrevista</th>
+                            <th>Notas</th>
+                            <th>Reclutado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data">
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <button onclick="obtenerTotalDatos()" id="btnConsultarTodasEntrevistas" type="submit" class="btn btn-primary">Consultar Todas las Entrevistas</button>
+        <button onclick="obtenerDatos()" id="btnConsultarEntrevista" type="submit" class="btn btn-primary">Consultar Entrevista</button>
+        <button onclick="agregarDatos()" id="btnAgregarEntrevista" type="submit" class="btn btn-primary">Agregar Entrevista</button>
+        <button onclick="eliminarEntrevista()" id="btnEliminarEntrevista" type="submit" class="btn btn-danger">Eliminar Entrevista</button>
+        <button onclick="actualizarEntrevista()" id="btnActualizarEntrevista" type="submit" class="btn btn-primary">Actualizar Entrevista</button>
+
+        <script>
+            const dataContenedor = document.getElementById('data');
+            const obtenerTotalDatos = () => {
+                fetch(`http://localhost:3000/entrevistas`)
+                    .then(response => response.json())
+                    .then(data => {
+                        mostrarDatos(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        dataContenedor.innerHTML = 'Ha ocurrido un error al obtener los datos.';
+                    });
+            };
+            const mostrarDatos = (data) => {
+                let body = "";
+                for (let i = 0; i < data.length; i++) {
+                    body += `<tr>
+                                  <td>${data[i].id}</td>
+                                  <td>${data[i].vacante}</td>
+                                  <td>${data[i].prospecto}</td>
+                                  <td>${data[i].fecha_entrevista}</td>
+                                  <td>${data[i].notas}</td>
+                                  <td>${data[i].reclutado}</td>
+                              </tr>`;
+                }
+                dataContenedor.innerHTML = `<table>${body}</table>`;
+            };
+        </script>
+
+        <script>
+            const dataContainer = document.getElementById('data');
+            const obtenerDatos = () => {
+                const id = document.getElementById('id').value;
+                fetch(`http://localhost:3000/entrevistas/${id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        mostrarData(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        dataContainer.innerHTML = 'La entrevista no existe';
+                    });
+            };
+            const mostrarData = (data) => {
+                let body = "";
+                const id = data && data.id ? data.id : '';
+                const vacante = data && data.vacante ? data.vacante : '';
+                const prospecto = data && data.prospecto ? data.prospecto : '';
+                const fecha_entrevista = data && data.fecha_entrevista ? data.fecha_entrevista : '';
+                const notas = data && data.notas ? data.notas : '';
+                const reclutado = data && data.reclutado ? data.reclutado : '';
+
+                body += `<tr>
+                                <td>${id}</td>
+                                <td>${vacante}</td>
+                                <td>${prospecto}</td>
+                                <td>${fecha_entrevista}</td>
+                                <td>${notas}</td>
+                                <td>${reclutado}</td>
+                            </tr>`;
+                dataContainer.innerHTML = `<table>${body}</table>`;
+            };
+        </script>
+        
+        <script>
+            const mostrarMensaje = (mensaje) => {
+                alert(mensaje);
+            };
+
+            const eliminarEntrevista = () => {
+                const id = document.getElementById('id').value;
+
+                if (!id) {
+                    mostrarMensaje('Debe ingresar un ID válido para eliminar la entrevista.');
+                    return;
+                }
+
+                const confirmar = confirm('¿Está seguro de que desea eliminar esta entrevista?');
+
+                if (confirmar) {
+                    fetch(`http://localhost:3000/entrevistas/${id}`, {
+                        method: 'DELETE'
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error(response.statusText);
+                        })
+                        .then(data => {
+                            mostrarMensaje(`Se eliminó correctamente la entrevista con id ${id}.`);
+                            obtenerTotalDatos();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            mostrarMensaje('Ha ocurrido un error al eliminar la entrevista');
+                        });
+                }
+            };
+        </script>
+
+            <script>
+                const actualizarEntrevista = () => {
+                    const id = document.getElementById('id').value;
+                    if (!id) {
+                        alert('Debe ingresar un ID válido para actualizar la entrevista.');
+                        return;
+                    }
+                    const confirmar = confirm('¿Está seguro de que desea actualizar esta entrevista?');
+
+                    if (confirmar) {
+                        const entrevista = {
+                            id: document.getElementById('id').value,
+                            vacante: document.getElementById('vacante').value,
+                            prospecto: document.getElementById('prospecto').value,
+                            fecha_entrevista: document.getElementById('fecha_entrevista').value,
+                            notas: document.getElementById('notas').value,
+                            reclutado: !!document.getElementById('reclutado').checked,
+                        };
+                        fetch(`http://localhost:3000/entrevistas/${id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(
+                                {
+                                    id: entrevista.id,
+                                    vacante: entrevista.vacante,
+                                    prospecto: entrevista.prospecto,
+                                    fecha_entrevista: entrevista.fecha_entrevista,
+                                    notas: entrevista.notas,
+                                    reclutado: entrevista.reclutado
+                                }
+                            ),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                alert(`Se actualizó correctamente la vacante con id ${id}.`);
+                                obtenerTotalDatos();
+                            })
+                            .catch((error) => {
+                                alert('Ha ocurrido un error al actualizar la vacante.');
+                            });
+                    }
+                };
+
+            </script>
+
+
+            <script>
+                //seleccionar el contenedor HTML
+                const dataContenedor = document.getElementById('contenedor');
+
+                const agregarDatos = () => {
+                    const id = document.getElementById('id').value;
+                    const vacante = document.getElementById('vacante').value;
+                    const prospecto = document.getElementById('prospecto').value;
+                    const fecha_entrevista = document.getElementById('fecha_entrevista').value;
+                    const notas = document.getElementById('notas').value;
+                    const reclutado = !!document.getElementById('reclutado').checked;
+
+                    fetch("http://localhost:3000/entrevistas", {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            id: id,
+                            vacante: vacante,
+                            prospecto: prospecto,
+                            fecha_entrevista: fecha_entrevista,
+                            notas: notas,
+                            reclutado: reclutado
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            obtenerTotalDatos();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            dataContenedor.innerHTML = 'Ha ocurrido un error al agregar los datos.';
+                        });
+                };
+            </script>
+    </div>
+</body>
+</html>

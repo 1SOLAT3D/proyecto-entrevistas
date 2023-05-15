@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Prospectos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Registro de Prospectos</title>
+</head>
+
+<body>
+    <div class="container">
+        Registro de Prospectos
+        <form id="miFormulario">
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="id" class="form-label">ID Prospecto</label>
+                <input type="number" class="form-control" id="id">
+            </div>
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre">
+            </div>
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="correo">
+            </div>
+            <div class="form-group col-sm-6 col-md-4 col-lg-3">
+                <label for="correo" class="form-label">Fecha de Registro</label><br>
+                <input type="date" id="fecha_registro">
+            </div>
+            <div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">
+                <table class="table table-bordered table-striped">
+                    Prospectos
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Fecha de Registro</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data">
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <button onclick="obtenerTotalDatos()" id="btnConsultarTodosProspectos" type="submit" class="btn btn-primary">Consultar Todos los Prospectos</button>
+        <button onclick="obtenerDatos()" id="btnConsultarProspecto" type="submit" class="btn btn-primary">Consultar Prospecto</button>
+        <button onclick="agregarDatos()" id="btnAgregarProspecto" type="submit" class="btn btn-primary">Agregar Prospecto</button>
+        <button onclick="eliminarProspecto()" id="btnEliminarProspecto" type="submit" class="btn btn-danger">Eliminar Prospecto</button>
+        <button onclick="actualizarProspecto()" id="btnActualizarProspecto" type="submit" class="btn btn-primary">Actualizar Prospecto</button>
+
+        <script>
+            const dataContenedor = document.getElementById('data');
+            const obtenerTotalDatos = () => {
+                fetch(`http://localhost:3000/prospecto`)
+                    .then(response => response.json())
+                    .then(data => {
+                        mostrarDatos(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        dataContenedor.innerHTML = 'Ha ocurrido un error al obtener los datos.';
+                    });
+            };
+            const mostrarDatos = (data) => {
+                let body = "";
+                for (let i = 0; i < data.length; i++) {
+                    body += `<tr>
+                                  <td>${data[i].id}</td>
+                                  <td>${data[i].nombre}</td>
+                                  <td>${data[i].correo}</td>
+                                  <td>${data[i].fecha_registro}</td>
+                              </tr>`;
+                }
+                dataContenedor.innerHTML = `<table>${body}</table>`;
+            };
+        </script>
+
+        <script>
+            const dataContainer = document.getElementById('data');
+            const obtenerDatos = () => {
+                const id = document.getElementById('id').value;
+                fetch(`http://localhost:3000/prospecto/${id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        mostrarData(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        dataContainer.innerHTML = 'El prospecto no existe';
+                    });
+            };
+            const mostrarData = (data) => {
+                let body = "";
+                const id = data && data.id ? data.id : '';
+                const nombre = data && data.nombre ? data.nombre : '';
+                const correo = data && data.correo ? data.correo : '';
+                const fecha_registro = data && data.fecha_registro ? data.fecha_registro : '';
+
+                body += `<tr>
+                                <td>${id}</td>
+                                <td>${nombre}</td>
+                                <td>${correo}</td>
+                                <td>${fecha_registro}</td>
+                            </tr>`;
+                dataContainer.innerHTML = `<table>${body}</table>`;
+            };
+        </script>
+        
+        <script>
+            const mostrarMensaje = (mensaje) => {
+                alert(mensaje);
+            };
+
+            const eliminarProspecto = () => {
+                const id = document.getElementById('id').value;
+
+                if (!id) {
+                    mostrarMensaje('Debe ingresar un ID válido para eliminar el prospecto');
+                    return;
+                }
+
+                const confirmar = confirm('¿Está seguro de que desea eliminar este prospecto?');
+
+                if (confirmar) {
+                    fetch(`http://localhost:3000/prospecto/${id}`, {
+                        method: 'DELETE'
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error(response.statusText);
+                        })
+                        .then(data => {
+                            mostrarMensaje(`Se eliminó correctamente el prospecto con id ${id}.`);
+                            obtenerTotalDatos();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            mostrarMensaje('Ha ocurrido un error al eliminar el prospecto');
+                        });
+                }
+            };
+        </script>
+
+            <script>
+                const actualizarProspecto = () => {
+                    const id = document.getElementById('id').value;
+                    if (!id) {
+                        alert('Debe ingresar un ID válido para actualizar el prospecto');
+                        return;
+                    }
+                    const confirmar = confirm('¿Está seguro de que desea actualizar este prospecto?');
+
+                    if (confirmar) {
+                        const prospecto = {
+                            id: document.getElementById('id').value,
+                            nombre: document.getElementById('nombre').value,
+                            correo: document.getElementById('correo').value,
+                            fecha_registro: document.getElementById('fecha_registro').value,
+                        };
+                        fetch(`http://localhost:3000/vacante/${id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(
+                                {
+                                    id: prospecto.id,
+                                    nombre: prospecto.nombre,
+                                    correo: prospecto.correo,
+                                    fecha_registro: prospecto.fecha_registro
+                                }
+                            ),
+                        })
+                            .then(response => {
+                                if (!response.ok) throw new Error(response.statusText);
+                            })
+                            .then((data) => {
+                                alert(`Se actualizó correctamente el prospecto con id ${id}.`);
+                                obtenerTotalDatos();
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                dataContainer.innerHTML = 'El prospecto no existe';
+                            });
+                    }
+                };
+
+            </script>
+
+
+            <script>
+                //agregar datos
+                const agregarDatos = () => {
+                    const id = document.getElementById('id').value;
+                    const nombre = document.getElementById('nombre').value;
+                    const correo = document.getElementById('correo').value;
+                    const fecha_registro = document.getElementById('fecha_registro').value;
+
+                    fetch('http://localhost:3000/prospecto', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            id: id,
+                            nombre: nombre,
+                            correo: correo,
+                            fecha_registro: fecha_registro
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            obtenerTotalDatos();
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            dataContenedor.innerHTML = 'Ha ocurrido un error al agregar los datos.';
+                        });
+                };
+            </script>
+    </div>
+</body>
+</html>

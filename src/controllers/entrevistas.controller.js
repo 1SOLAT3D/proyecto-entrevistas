@@ -66,9 +66,7 @@ export const deleteEntrevistaById = async (req, res) => {
 
 export const updateEntrevistaById = async (req, res) => {
     const { id, vacante, prospecto, fecha_entrevista, notas, reclutado } = req.body;
-    if (id == null || vacante == null || prospecto == null || fecha_entrevista == null || notas == null || reclutado == null) {
-        return res.status(400).json({ msg: 'Favor de llenar todos los campos' });
-    }
+    
     try {
         const pool = await getConnection();
         await pool
