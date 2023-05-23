@@ -118,14 +118,11 @@
 
             const eliminarVacante = () => {
                 const id = document.getElementById('id').value;
-
                 if (!id) {
                     mostrarMensaje('Debe ingresar un ID válido para eliminar la vacante.');
                     return;
                 }
-
                 const confirmar = confirm('¿Está seguro de que desea eliminar esta vacante?');
-
                 if (confirmar) {
                     fetch(`http://localhost:3000/vacante/${id}`, {
                         method: 'DELETE'
